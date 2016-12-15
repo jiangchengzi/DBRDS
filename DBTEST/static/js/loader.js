@@ -7,7 +7,8 @@ $(document).ready(function () {
    $('.ui.sidebar').sidebar({
       dimPage: false,closable:false
    });
-   $('.ui.modal').modal('attach events','.createdbinstance.button');
+   $('.createdbinstance.modal').modal('attach events','.createdbinstance.button');
+   $('.deletedbinstance.modal').modal('attach events','.deletedbinstance');
 });
 
 // function changesidebar() {
