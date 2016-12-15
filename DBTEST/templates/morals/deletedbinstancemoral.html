@@ -1,0 +1,17 @@
+<div class="ui deletedbinstance modal">
+  <i class="close icon"></i>
+  <div class="header">
+   创建数据库实例
+  </div>
+  <div class="content">
+      <div class="ui form segment" >
+          <form action={% url 'deletedbinstance' %} method="POST">
+              {% csrf_token %}
+          <div class="field">
+                <h1>确定删除该实例？</h1>
+          </div>
+          <button type="submit" class="ui submit button">确认删除</button>
+          </form>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block nav %}
+    <div class="ui container" style="padding: 70px">
+    <div class="ui breadcrumb">
+              <a class="section" href={% url 'index' %}>首页</a>
+              <div class="divider"> / </div>
+              <a class="section"><b>实例管理</b></a>
+    </div>
+    <div class="ui divider"></div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="ui center aligned segment">
+    <table class="ui celled table">
+      <thead>
+        <tr>
+          <th class="two wide">实例名称/ID</th>
+          <th class="two wide">实例状态</th>
+          <th class="ten wide">创建时间</th>
+          <th class="five wide">实例操作</th>
+        </tr>
+      </thead>
+      <tbody>
+       {% for item in dbinstanceList %}
+            <tr>
+                <td>{{item.DBInstanceName}}</td>
+                <td>{{item.DBInstancestatus}}</td>
+                <td>{{item.DBInstanceCreatetime}}</td>
+                <td>
+                  <div class="ui icon top left pointing dropdown button">
+                      <i class="wrench icon"></i>
+                      <div class="menu">
+                          <div class="item">查看实例详细信息</div>
+                          <div class="deletedbinstance item">删除实例</div>
+                      </div>
+                  </div>
+                </td>
+        </tr>
+       {% endfor %}
+      </tbody>
+        <tfoot class="full-width">
+            <tr>
+              <th colspan="4">
+                <div class="ui right floated small primary labeled icon createdbinstance button" >
+                  <i class="plus icon"></i> 创建实例
+                </div>
+              </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% include 'morals/createdbinstancemoral.html' %}
+{% endblock %}
