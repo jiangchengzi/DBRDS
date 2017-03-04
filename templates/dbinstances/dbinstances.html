@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block nav %}
+    <div class="ui container" style="padding: 70px">
+    <div class="ui breadcrumb">
+              <a class="section" href={% url 'index' %}>首页</a>
+              <div class="divider"> / </div>
+              <a class="section"><b>实例管理</b></a>
+    </div>
+    <div class="ui divider"></div>
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="ui  container" style="padding: 0px 0px 30px 0px">
+    <div class="ui left floated small teal icon createdbinstance button">
+              <i class="plus icon"></i> 创建实例
+    </div>
+    <div class="ui left floated small red icon deletedbinstance button">
+              <i class="delete icon"></i> 批量删除
+    </div>
+</div>
+<table class="ui celled definition table">
+  <thead class="full-width">
+      <th></th>
+      <th class="two wide center aligned">实例ID</th>
+      <th class="two wide center aligned">实例名称</th>
+      <th class="two wide center aligned">实例状态</th>
+      <th class="five wide center aligned">创建时间</th>
+      <th class="ten wide center aligned">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for item in dbinstanceList %}
+    <tr>
+             <td class="collapsing">
+                 <div class="ui fitted slider checkbox">
+                 <input type="checkbox"> <label></label>
+                 </div>
+             </td>
+            <td>{{item.DBInstanceId}}</td>
+            <td>{{item.DBInstanceName}}</td>
+            <td>{{item.DBInstancestatus}}</td>
+            <td>{{item.DBInstanceCreatetime}}</td>
+            <td class="center aligned">
+                   <a value="{% url 'deletedbinstance' %}?DBInstanceId={{ item.DBInstanceId }}" class="deletedbinstance item"><button class="ui inverted blue button">删 除</button></a>
+                   <a><button class="ui inverted purple button">详情</button></a>
+            </td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+<div class="ui createdbinstance modal">
+  <i class="close icon"></i>
+  <div class="header">
+   创建数据库实例
+  </div>
+  <div class="content">
+
+          <form action={% url 'createdbinstance' %} method="POST">
+              {% csrf_token %}
+          <div class="ui center aligned container" style="padding-bottom: 30px">
+                <div class="ui  teal  large label">实例名称</div>
+                <div class="ui input"><input placeholder="实例名称" type="text" name="DBInstanceName"></div>
+          </div>
+          <div class="ui center aligned container" style="padding:0px 0px 30px 15px ">
+                <label class="ui teal large label">实例ID</label>
+                <div class="ui input"><input placeholder="实例ID" type="text" name="DBInstanceId"></div>
+          </div>
+          <div class="ui center aligned container" style="padding:0px 0px 30px 19px ">
+                <label class="ui teal large label">实例状态</label>
+                <div class="ui selection dropdown">
+                    <input placeholder="Last Name" type="hidden" name="DBInstancestatus">
+                    <div class="default text">状态</div>
+                    <i class="dropdown icon"></i>
+                        <div class="menu">
+                             <div class="item" data-value="1">running</div>
+                             <div class="item" data-value="0">creating</div>
+                        </div>
+                </div>
+          </div>
+          <button type="submit" class="ui submit button">提交</button>
+         </div>
+          </form>
+  </div>
+  </div>
+</div>
+
+
+<div class="ui deletedbinstance modal" style="height: 200px;width:500px;margin-left: -200px">
+  <i class="close icon"></i>
+  <div class="ui center header">
+   <h3>删除数据库实例</h3>
+  </div>
+
+    <div class="ui content">
+      <div class="ui center aligned container"><h2>确认删除此实例吗?</h2></div>
+    </div>
+    <div class="actions">
+          <div class="ui red  cancel inverted button">
+            <i class="remove icon"></i>
+            取消
+          </div>
+          <div class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+            删除
+          </div>
+    </div>
+</div>
+    <script>
+        value=null;
+        $(document).ready(function () {
+
+            $(".deletedbinstance.item").click(function () {
+                value=$(this).attr('value');
+            });
+           $('.createdbinstance.modal').modal('attach events','.createdbinstance.button');
+           $('.deletedbinstance.modal').modal({
+               onApprove:function () {
+                   $.get(value,
+                           {},
+                           function (data) {
+                               window.location.reload();
+                           }
+                   );
+
+                    }
+               }).modal('attach events','.deletedbinstance.item');
+            });
+    </script>
+{% endblock %}
