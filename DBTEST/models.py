@@ -6,7 +6,10 @@ class DBInstance(models.Model):
     DBInstanceName=models.CharField(max_length=20,null=True)
     DBInstanceCreatetime=models.DateTimeField('date published',default=timezone.now,null=True)
     DBInstancestatus=models.CharField(max_length=10,null=True)
-    Username=models.CharField(max_length=20,null=True)
-
-
-# Create your models here.
+    User=models.ForeignKey("User",default="User")
+#
+#
+# # Create your models here.
+class User(models.Model):
+    Username=models.CharField(max_length=20,default="guest",null=True)
+    Password=models.CharField(max_length=20,default="guest",null=True)

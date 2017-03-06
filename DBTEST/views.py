@@ -7,7 +7,6 @@ from  django.utils import timezone
 from django.forms.models import model_to_dict
 from django.core.urlresolvers import reverse
 from .ClientRequest import ClientRequest
-from .ClientRequest import GetUrl
 
 def showdbinstance(request,url=''):
     dbinstanceList=[]
@@ -23,15 +22,14 @@ def deletedbinstance(request):
     return HttpResponse('删除成功')
 
 
-def createdbinstance(request,url=''):
+def createdbinstance(request):
     if request.method == "POST":
         form=DbinstanceForm(request.POST)
         form.DBInstanceCreatetime=timezone.now()
         if form.is_valid():
             form.save()
-    get=GetUrl(request)
-    url=get.Get()
-    print(url)
+    client=ClientRequest(request)
+    print(client.do_action())
     return HttpResponseRedirect(reverse('managedbinstance'))
 
 def index(request):
